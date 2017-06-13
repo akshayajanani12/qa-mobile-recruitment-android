@@ -9,7 +9,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.main.MainActivity">
+        <activity android:name=".feature.main.MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,6 +20,8 @@
         <activity
             android:name=".feature.login.LoginActivity"
             android:label="@string/title_activity_login"></activity>
+        <activity android:name=".feature.registration.RegisterActivity" />
+        <activity android:name=".feature.editprofile.EditProfileActivity"></activity>
     </application>
 
 </manifest>

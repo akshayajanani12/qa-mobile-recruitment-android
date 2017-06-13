@@ -28,7 +28,7 @@ public class AddToListPresenter extends MvpNullObjectBasePresenter<AddToListCont
         if (TextUtils.isEmpty(itemName)) {
             getView().showItemNameRequired();
         } else {
-            getView().passResultAndCloseFragment(new ListItem(itemName));
+            getView().passResultAndCloseFragment(itemName);
         }
     }
 }

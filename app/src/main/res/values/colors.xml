@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorRed">#ff5252</color>
+    <color name="lightGray">#BDBDBD</color>
+    <color name="actionButtonLabelColor">#95a5ae</color>
+    <color name="materialDivider">#1f000000</color>
+    <color name="textGrey">#6D6D72</color>
 </resources>

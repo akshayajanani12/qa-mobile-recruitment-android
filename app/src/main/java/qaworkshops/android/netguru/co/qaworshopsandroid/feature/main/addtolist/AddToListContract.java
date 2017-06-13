@@ -9,7 +9,7 @@ public interface AddToListContract {
 
     interface View extends MvpView {
 
-        void passResultAndCloseFragment(ListItem listItem);
+        void passResultAndCloseFragment(String itemName);
 
         void showItemNameRequired();
     }

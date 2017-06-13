@@ -8,6 +8,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
+import qaworkshops.android.netguru.co.qaworshopsandroid.data.user.UserProvider;
+import qaworkshops.android.netguru.co.qaworshopsandroid.data.user.UserProviderSource;
 
 @Module
 public class ApplicationModule {private Application application;
@@ -33,5 +36,17 @@ public class ApplicationModule {private Application application;
     @Singleton
     Resources provideResources() {
         return application.getResources();
+    }
+
+    @Provides
+    @Singleton
+    Realm provideRealm() {
+        return Realm.getDefaultInstance();
+    }
+
+    @Singleton
+    @Provides
+    UserProviderSource provideUserProviderSource() {
+        return new UserProvider();
     }
 }

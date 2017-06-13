@@ -1,17 +1,21 @@
 package qaworkshops.android.netguru.co.qaworshopsandroid.feature.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import qaworkshops.android.netguru.co.qaworshopsandroid.feature.main.MainActivity;
 import qaworkshops.android.netguru.co.qaworshopsandroid.R;
 import qaworkshops.android.netguru.co.qaworshopsandroid.app.App;
+import qaworkshops.android.netguru.co.qaworshopsandroid.feature.main.MainActivity;
+import qaworkshops.android.netguru.co.qaworshopsandroid.feature.registration.RegisterActivity;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View  {
@@ -23,6 +27,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     EditText mPasswordView;
 
     private LoginComponent component;
+
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +47,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         return component.getLoginPresenter();
     }
 
-    @OnClick(R.id.email_sign_in_button)
+    @OnClick(R.id.sign_up_button)
     public void attemptLogin() {
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -48,21 +57,33 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         getPresenter().validateLoginData(email, password);
     }
 
+    @OnClick(R.id.email_register_button)
+    public void openRegisterView() {
+        RegisterActivity.startActivity(this);
+        finish();
+    }
+
     @Override
-    public void showInvalidEmailError() {
-        mEmailView.setError(getString(R.string.error_invalid_email));
+    public void showPasswordRequired() {
+        mEmailView.setError(getString(R.string.error_field_required));
         mEmailView.requestFocus();
     }
 
     @Override
-    public void showPasswordToShortError() {
-        mPasswordView.setError(getString(R.string.error_invalid_password));
+    public void showEmailRequired() {
+        mPasswordView.setError(getString(R.string.error_field_required));
         mPasswordView.requestFocus();
     }
 
     @Override
     public void signInUser(String email) {
         MainActivity.startActivity(this, email);
+        finish();
+    }
+
+    @Override
+    public void onLoginDataIncorrect() {
+        Toast.makeText(this, getString(R.string.login_data_incorrect), Toast.LENGTH_LONG).show();
     }
 
     private void initComponent() {

@@ -19,4 +19,44 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ActionButtonStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="NoTitleDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:windowMinWidthMajor">40%</item>
+        <item name="android:windowMinWidthMinor">40%</item>
+    </style>
+
+    <style name="AddItemTextInputStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/lightGray</item>
+        <item name="colorControlNormal">@color/lightGray</item>
+    </style>
+
+    <style name="Font12.Gray" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textGrey</item>
+    </style>
+
+    <style name="DetailsActionButtonLabels" parent="Font12.Gray">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/actionButtonLabelColor</item>
+        <item name="android:layout_marginRight">@dimen/details_action_label_right_margin</item>
+        <item name="android:layout_marginLeft">@dimen/details_action_label_left_margin</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/materialDivider</item>
+    </style>
+
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
 </resources>

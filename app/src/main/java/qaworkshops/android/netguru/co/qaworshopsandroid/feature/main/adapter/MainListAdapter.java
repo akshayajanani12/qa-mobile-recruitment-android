@@ -8,19 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import qaworkshops.android.netguru.co.qaworshopsandroid.data.ListItem;
+import qaworkshops.android.netguru.co.qaworshopsandroid.feature.main.RemoveItemListener;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListViewHolder> {
 
     @NonNull
     private List<ListItem> itemList;
 
-    public MainListAdapter() {
+    private final RemoveItemListener removeItemListener;
+
+    public MainListAdapter(RemoveItemListener removeItemListener) {
         this.itemList = new ArrayList<>();
+        this.removeItemListener = removeItemListener;
     }
 
     @Override
     public MainListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MainListViewHolder(parent);
+        return new MainListViewHolder(parent, removeItemListener);
     }
 
     @Override
@@ -37,13 +41,17 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListViewHolder> {
         return itemList;
     }
 
-    public void setNewItems(List<ListItem> itemList) {
-        this.itemList = itemList;
-        notifyDataSetChanged();
-    }
+//    public void addNewItem(ListItem itemToAdd) {
+//        this.itemList.add(itemToAdd);
+//        notifyDataSetChanged();
+//    }
 
-    public void addNewItem(ListItem itemToAdd) {
-        this.itemList.add(itemToAdd);
-        notifyItemInserted(itemList.size() - 1);
+//    public void addAllItemsToList(List<ListItem> list) {
+//        itemList.addAll(list);
+//    }
+
+    public void setListItem(List<ListItem> list) {
+        itemList = list;
+        notifyDataSetChanged();
     }
 }

@@ -1,19 +1,17 @@
 package qaworkshops.android.netguru.co.qaworshopsandroid.feature.main.addtolist;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import qaworkshops.android.netguru.co.qaworshopsandroid.R;
 import qaworkshops.android.netguru.co.qaworshopsandroid.app.App;
-import qaworkshops.android.netguru.co.qaworshopsandroid.data.ListItem;
 import qaworkshops.android.netguru.co.qaworshopsandroid.exceptions.InterfaceNotImplementedException;
 import qaworkshops.android.netguru.co.qaworshopsandroid.feature.shared.BaseMvpDialogFragment;
 
@@ -22,44 +20,45 @@ public class AddToListDialogFragment extends BaseMvpDialogFragment<AddToListCont
 
     public static final String TAG = AddToListDialogFragment.class.getSimpleName();
 
-    @BindView(R.id.item_name_edit_text)
-    EditText itemNameEditText;
+    @BindView(R.id.name_text_input_layout)
+    TextInputLayout nameTextInputLayout;
+
+    private Button createButton;
+    private Button cancelButton;
 
     public static AddToListDialogFragment newInstance() {
         return new AddToListDialogFragment();
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_item, container, false);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        View dialogContentView = View.inflate(getContext(), R.layout.fragment_add_item, null);
+        super.onViewCreated(dialogContentView, savedInstanceState);
+        Dialog dialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
+                .setTitle(R.string.dialog_fragment_add_new_item_title)
+                .setPositiveButton(R.string.action_create, null)
+                .setNegativeButton(R.string.action_cancel, null)
+                .setView(dialogContentView)
+                .create();
+
+        setupDialogButtons(dialog);
+        return dialog;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     @NonNull
     @Override
     public AddToListContract.Presenter createPresenter() {
         return App.getAppComponent(getContext()).plusAddToListComponent().getPresenter();
     }
-
-    @OnClick(R.id.add_button)
-    public void onAddButtonClick() {
-        getPresenter().validateItemName(itemNameEditText.getText().toString());
-    }
-
     @Override
-    public void passResultAndCloseFragment(ListItem listItem) {
+    public void passResultAndCloseFragment(String listItemName) {
         Activity targetActivity = getActivity();
         try {
             AddToListDialogFragment.ItemAddedListener listener
                     = (AddToListDialogFragment.ItemAddedListener) targetActivity;
-            listener.onItemAdded(listItem);
+            listener.onItemAdded(listItemName);
             dismiss();
         } catch (ClassCastException e) {
             throw new InterfaceNotImplementedException(e,
@@ -70,13 +69,26 @@ public class AddToListDialogFragment extends BaseMvpDialogFragment<AddToListCont
 
     @Override
     public void showItemNameRequired() {
-        itemNameEditText.setError(getString(R.string.error_field_required));
-        itemNameEditText.requestFocus();
+        nameTextInputLayout.setError(getString(R.string.error_field_required));
+        nameTextInputLayout.requestFocus();
+    }
+
+    private void setupDialogButtons(Dialog dialog) {
+        dialog.setOnShowListener(shownDialog -> {
+            createButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            cancelButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+            createButton.setOnClickListener(v -> {
+                getPresenter().validateItemName(nameTextInputLayout.getEditText().getText().toString());
+            });
+            cancelButton.setOnClickListener(v -> {
+                dismiss();
+            });
+        });
     }
 
     @FunctionalInterface
     public interface ItemAddedListener {
 
-        void onItemAdded(ListItem listItem);
+        void onItemAdded(String listItemName);
     }
 }
